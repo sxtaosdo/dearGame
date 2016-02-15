@@ -1,17 +1,19 @@
-package com.player.module
+package com.player.module.view
 {
+	import com.player.module.IPanel;
+	
 	import flash.display.Sprite;
 	
 	/**
-	 * 游戏主界面
-	 * 初始其他界面从这里开始
+	 * 通用loading界面
 	 * @author shixt
 	 * 
 	 */
-	public class MainView extends Sprite implements IPanel
+	public class LoadeView extends Sprite implements IPanel
 	{
-		public function MainView()
+		public function LoadeView()
 		{
+			super();
 		}
 		
 		public function onAdd(data:*=null):void

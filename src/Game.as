@@ -6,6 +6,13 @@ package
 	{
 		public function Game()
 		{
+			//处理数据
+			//处理ui
+			startup();
+		}
+		
+		private function startup():void
+		{
 			
 		}
 	}

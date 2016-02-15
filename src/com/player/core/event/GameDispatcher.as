@@ -7,22 +7,22 @@ package com.player.core.event
 	/**
 	 * @author shixt
 	 */
-	public class Dispatcher extends EventDispatcher
+	public class GameDispatcher extends EventDispatcher
 	{
-		private static var _instance:Dispatcher;
+		private static var _instance:GameDispatcher;
 		private static var evtMap:Dictionary; //不用对象池至少增加30M的内存开销
 
-		public function Dispatcher(key:Key)
+		public function GameDispatcher(key:Key)
 		{
 			super(null);
 			evtMap=new Dictionary(true);
 		}
 
-		public static function get instance():Dispatcher
+		public static function get instance():GameDispatcher
 		{
 			if (_instance == null)
 			{
-				_instance=new Dispatcher(new Key)
+				_instance=new GameDispatcher(new Key)
 			}
 			return _instance;
 		}
@@ -31,7 +31,7 @@ package com.player.core.event
 		{
 			if (event is Event)
 			{
-				Dispatcher.instance.dispatchEvent(event);
+				GameDispatcher.instance.dispatchEvent(event);
 			}
 			else
 			{
@@ -39,7 +39,7 @@ package com.player.core.event
 				{
 					evtMap[event]=new Event(event);
 				}
-				Dispatcher.instance.dispatchEvent(evtMap[event]);
+				GameDispatcher.instance.dispatchEvent(evtMap[event]);
 			}
 		}
 
@@ -47,17 +47,17 @@ package com.player.core.event
 		{
 			if (event is Event)
 			{
-				Dispatcher.instance.removeEventListener(event, fun);
+				GameDispatcher.instance.removeEventListener(event, fun);
 			}
 			else
 			{
-				Dispatcher.instance.removeEventListener(evtMap[event], fun);
+				GameDispatcher.instance.removeEventListener(evtMap[event], fun);
 			}
 		}
 
 		public static function addEventListener(type:String, callback:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
 		{
-			Dispatcher.instance.addEventListener(type, callback, useCapture, priority, useWeakReference);
+			GameDispatcher.instance.addEventListener(type, callback, useCapture, priority, useWeakReference);
 		}
 	}
 }

@@ -1,5 +1,11 @@
 package com.player.core.data.model
 {
+	import com.player.core.event.BaseEvent;
+	import com.player.core.event.GameDispatcher;
+
+	/**
+	 * 数据存放
+	 */
 	public class GameModel
 	{
 		private static var _instance:GameModel;
@@ -14,6 +20,10 @@ package com.player.core.data.model
 				_instance=new GameModel(new Key());
 			}
 			return _instance;
+		}
+		
+		public function setGameState(state:String):void{
+			GameDispatcher.send(BaseEvent.GAME_STATE_EVENT);
 		}
 
 	}

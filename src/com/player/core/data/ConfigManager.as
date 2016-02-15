@@ -14,7 +14,7 @@ package com.player.core.data
 	import com.player.core.data.vo.sprite.MonsterVo;
 	import com.player.core.data.vo.sprite.PropertyVo;
 	import com.player.core.event.BaseEvent;
-	import com.player.core.event.Dispatcher;
+	import com.player.core.event.GameDispatcher;
 
 	import flash.utils.Dictionary;
 
@@ -60,7 +60,7 @@ package com.player.core.data
 			else
 			{
 				isLoaded=true;
-				Dispatcher.send(BaseEvent.CONFIG_BASE_COMPLETE_EVENT);
+				GameDispatcher.send(BaseEvent.CONFIG_BASE_COMPLETE_EVENT);
 			}
 		}
 
