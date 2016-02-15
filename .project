@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Game</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] Utils</name>
+			<type>2</type>
+			<location>D:/svn/as3libs/trunk/Utils</location>
+		</link>
+		<link>
+			<name>[source path] greensock</name>
+			<type>2</type>
+			<location>D:/svn/as3libs/trunk/greensock</location>
+		</link>
+	</linkedResources>
+</projectDescription>

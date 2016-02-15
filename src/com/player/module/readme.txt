@@ -1,0 +1,1 @@
+所有module里面的可视化的ui组件都要实现   Ipanel   接口
