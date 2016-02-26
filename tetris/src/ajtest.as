@@ -6,7 +6,6 @@ package
 	import flash.events.Event;
 	
 	import view.GameView;
-	import view.MazeView;
 	
 	[SWF(frameRate="24", width="755", height="700", backgroundColor="0x135889")]
 	public class ajtest extends Sprite
@@ -64,13 +63,13 @@ package
 
 		private function createScene():void
 		{
-//			gameView=new GameView();
-//			gameView.x=bgSp.x;
-//			gameView.y=bgSp.y;
-//			this.addChild(gameView);
+			gameView=new GameView();
+			gameView.x=bgSp.x;
+			gameView.y=bgSp.y;
+			this.addChild(gameView);
 			
-			var mazeView:MazeView=new MazeView();
-			this.addChild(mazeView);
+//			var mazeView:MazeView=new MazeView();
+//			this.addChild(mazeView);
 		}
 	}
 }
