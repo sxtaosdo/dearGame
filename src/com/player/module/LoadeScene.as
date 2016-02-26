@@ -1,17 +1,10 @@
-package com.player.module.view
+package com.player.module
 {
-	import com.player.module.IPanel;
-	
 	import flash.display.Sprite;
 	
-	/**
-	 * 通用loading界面
-	 * @author shixt
-	 * 
-	 */
-	public class LoadeView extends Sprite implements IPanel
+	public class LoadeScene extends Sprite implements IPanel
 	{
-		public function LoadeView()
+		public function LoadeScene()
 		{
 			super();
 		}

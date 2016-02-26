@@ -8,9 +8,9 @@ package com.player.module
 	 * @author shixt
 	 * 
 	 */
-	public class MainView extends Sprite implements IPanel
+	public class MainScene extends Sprite implements IPanel
 	{
-		public function MainView()
+		public function MainScene()
 		{
 		}
 		

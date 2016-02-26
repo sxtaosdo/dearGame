@@ -20,7 +20,8 @@ package com.player.core.data
 
 	public class ConfigManager
 	{
-		private static var CONFIG_LIST:Array=[ConfigDef.FILE_NAME_VOCATIONAL, ConfigDef.FILE_NAME_MONSTER, ConfigDef.FILE_NAME_BUFF, ConfigDef.FILE_NAME_MAP, ConfigDef.FILE_NAME_SKILL, ConfigDef.FILE_NAME_USER_TEMP, ConfigDef.FILE_NAME_HERO, ConfigDef.FILE_NAME_GOODS, ConfigDef.FILE_NAME_EQUIP, ConfigDef.FILE_NAME_FUN];
+//		private static var CONFIG_LIST:Array=[ConfigDef.FILE_NAME_VOCATIONAL, ConfigDef.FILE_NAME_MONSTER, ConfigDef.FILE_NAME_BUFF, ConfigDef.FILE_NAME_MAP, ConfigDef.FILE_NAME_SKILL, ConfigDef.FILE_NAME_USER_TEMP, ConfigDef.FILE_NAME_HERO, ConfigDef.FILE_NAME_GOODS, ConfigDef.FILE_NAME_EQUIP, ConfigDef.FILE_NAME_FUN];
+		private static var CONFIG_LIST:Array=[];
 		private static var CONFIG_URL:String="config/";
 		private static var _instance:ConfigManager;
 		/**
