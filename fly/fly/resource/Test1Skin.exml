@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="Test1Skin" width="400" height="300" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Button id="btn1" label="按钮" x="286" y="244"/>
+	<e:Image x="30" y="15" source="Title_png"/>
+</e:Skin>

@@ -4,6 +4,12 @@ package
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.utils.Timer;
+	
+	import org.osmf.events.TimeEvent;
+	import org.osmf.metadata.TimelineMarker;
 	
 	import view.GameView;
 	
@@ -13,9 +19,39 @@ package
 		private var bgSp:Sprite;
 		private var gameView:GameView;
 		
+		private var posArr:Array=[new Point(56,56),new Point(-57,56),new Point(-57,-57),new Point(56,-57)];
+		private var shp:Shape;
+		private var count:int=0;
+		private var timer:Timer=new Timer(1000);
 		public function ajtest()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE,onAddToStage);
+//			shp=new Shape();
+//			shp.x=50;
+//			shp.y=100;
+//			this.addChild(shp);
+//			
+//			shp.graphics.beginFill(0xFFFFFF);
+//			timer.addEventListener(TimerEvent.TIMER,create);
+//			timer.start();
+			
+			
+		}
+		
+		private function create(evt:TimerEvent):void
+		{
+			if(count>=posArr.length)
+			{
+				shp.graphics.endFill();
+				timer.removeEventListener(TimerEvent.TIMER,create);
+				return;
+			}
+			
+			if(!count){
+				shp.graphics.moveTo(posArr[0].x,posArr[0].y);
+			}
+			shp.graphics.lineTo(posArr[count].x,posArr[count].y);
+			count++;
 		}
 		
 		protected function onAddToStage(event:Event):void
