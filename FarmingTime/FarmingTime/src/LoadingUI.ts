@@ -1,51 +1,78 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-2015, Egret Technology Inc.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
+/**
+ * 加载进度
+ */ 
+class LoadingUI extends eui.Component implements Ipanel {
 
-class LoadingUI extends egret.Sprite {
+    private progressText: eui.Label;
+    private static assetsList: Array<string> = ["earth"];
+    private static total: number = LoadingUI.assetsList.length;
+    private current: number = 0;
 
     public constructor() {
         super();
-        this.createView();
+        this.touchChildren = false;
+        this.touchEnabled = false;
+        this.addEventListener(eui.UIEvent.COMPLETE,this.onSkinComplete,this);
+        this.skinName = "resource/skin/LoadSkin.exml"; 
     }
 
-    private textField:egret.TextField;
-
-    private createView():void {
-        this.textField = new egret.TextField();
-        this.addChild(this.textField);
-        this.textField.y = 300;
-        this.textField.width = 480;
-        this.textField.height = 100;
-        this.textField.textAlign = "center";
+    protected createChildren() {
+        super.createChildren();
+    }
+    
+    private onSkinComplete(): void {       
+        this.loadAssets(this);
+    }
+    
+    /**
+     * 统一加载所有的资源
+     */
+    private loadAssets(target:LoadingUI): void {
+        
+        if(LoadingUI.assetsList.length > 0) {
+            var groupName: string = LoadingUI.assetsList.shift();
+            console.log("开始加载资源:" + groupName);
+            RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE,this.onComplete,this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR,this.onError,this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS,this.onResourceProgress,this);
+            RES.loadGroup(groupName);
+            target.current++;
+        } else {
+            RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE,this.onComplete,this);
+            RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR,this.onError,this);
+            RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS,this.onResourceProgress,this);
+            target.progressText.text = "100%";
+            GameDispatcher.send(BaseEvent.ASSEST_LOAD_COMPLETE_EVENT);
+        }
     }
 
-    public setProgress(current:number, total:number):void {
-        this.textField.text = `Loading...${current}/${total}`;
+    private onComplete(event: RES.ResourceEvent): void {
+        this.loadAssets(this);
+    }
+
+    private onError(event: RES.ResourceEvent): void {
+        console.error("加载资源遇到错误");
+    }
+
+    private onResourceProgress(event: RES.ResourceEvent): void {
+        this.setProgress(event.itemsLoaded,event.itemsTotal);
+    }
+
+    public setProgress(current,total): void {
+        var str: string = Math.floor((this.current - 1 + (current / total)) / LoadingUI.total * 100).toString() + "%";
+        this.progressText.text = str;
+    }
+
+    public onAdd(data?: any): void {
+    }
+
+    public onRemove(data?: any): void {
+        RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE,this.onComplete,this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR,this.onError,this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS,this.onResourceProgress,this);
+    }
+
+    public destroy(): void {
+        this.onRemove();
     }
 }

@@ -1,49 +1,70 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-2015, Egret Technology Inc.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
+/**
+ * 加载进度
+ */
 var LoadingUI = (function (_super) {
     __extends(LoadingUI, _super);
     function LoadingUI() {
         _super.call(this);
-        this.createView();
+        this.current = 0;
+        this.touchChildren = false;
+        this.touchEnabled = false;
+        this.addEventListener(eui.UIEvent.COMPLETE, this.onSkinComplete, this);
+        this.skinName = "resource/skin/LoadSkin.exml";
     }
     var d = __define,c=LoadingUI,p=c.prototype;
-    p.createView = function () {
-        this.textField = new egret.TextField();
-        this.addChild(this.textField);
-        this.textField.y = 300;
-        this.textField.width = 480;
-        this.textField.height = 100;
-        this.textField.textAlign = "center";
+    p.createChildren = function () {
+        _super.prototype.createChildren.call(this);
+    };
+    p.onSkinComplete = function () {
+        this.loadAssets(this);
+    };
+    /**
+     * 统一加载所有的资源
+     */
+    p.loadAssets = function (target) {
+        if (LoadingUI.assetsList.length > 0) {
+            var groupName = LoadingUI.assetsList.shift();
+            console.log("开始加载资源:" + groupName);
+            RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onComplete, this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onError, this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+            RES.loadGroup(groupName);
+            target.current++;
+        }
+        else {
+            RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onComplete, this);
+            RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onError, this);
+            RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+            target.progressText.text = "100%";
+            GameDispatcher.send(BaseEvent.ASSEST_LOAD_COMPLETE_EVENT);
+        }
+    };
+    p.onComplete = function (event) {
+        this.loadAssets(this);
+    };
+    p.onError = function (event) {
+        console.error("加载资源遇到错误");
+    };
+    p.onResourceProgress = function (event) {
+        this.setProgress(event.itemsLoaded, event.itemsTotal);
     };
     p.setProgress = function (current, total) {
-        this.textField.text = "Loading..." + current + "/" + total;
+        var str = Math.floor((this.current - 1 + (current / total)) / LoadingUI.total * 100).toString() + "%";
+        this.progressText.text = str;
     };
+    p.onAdd = function (data) {
+    };
+    p.onRemove = function (data) {
+        RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onComplete, this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onError, this);
+        RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+    };
+    p.destroy = function () {
+        this.onRemove();
+    };
+    LoadingUI.assetsList = ["earth"];
+    LoadingUI.total = LoadingUI.assetsList.length;
     return LoadingUI;
-}(egret.Sprite));
-egret.registerClass(LoadingUI,'LoadingUI');
+}(eui.Component));
+egret.registerClass(LoadingUI,'LoadingUI',["Ipanel"]);
+//# sourceMappingURL=LoadingUI.js.map

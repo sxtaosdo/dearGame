@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Egret</title>
+    <title>FarmingTime</title>
     <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="full-screen" content="true"/>
@@ -28,16 +28,47 @@
 	<script egret="lib" src="libs/modules/game/game.web.js" src-release="libs/modules/game/game.web.min.js"></script>
 	<script egret="lib" src="libs/modules/tween/tween.js" src-release="libs/modules/tween/tween.min.js"></script>
 	<script egret="lib" src="libs/modules/res/res.js" src-release="libs/modules/res/res.min.js"></script>
+	<script egret="lib" src="libs/modules/eui/eui.js" src-release="libs/modules/eui/eui.min.js"></script>
+	<script egret="lib" src="libs/modules/socket/socket.js" src-release="libs/modules/socket/socket.min.js"></script>
 	<!--modules_files_end-->
-
+    <script egret="lib" src="libs/mouse/mouse.min.js" src-release="libs/mouse/mouse.min.js"></script>
     <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
     <!--other_libs_files_start-->
+	
     <!--other_libs_files_end-->
 
     <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
     <!--game_files_start-->
+	<script egret="game" src="bin-debug/AssetAdapter.js"></script>
+	<script egret="game" src="bin-debug/data/ConfigModel.js"></script>
+	<script egret="game" src="bin-debug/data/GameModel.js"></script>
+	<script egret="game" src="bin-debug/data/UserModel.js"></script>
+	<script egret="game" src="bin-debug/data/vo/EarthVo.js"></script>
+	<script egret="game" src="bin-debug/data/vo/ItemVo.js"></script>
+	<script egret="game" src="bin-debug/data/vo/PackVo.js"></script>
+	<script egret="game" src="bin-debug/data/vo/SeedVo.js"></script>
+	<script egret="game" src="bin-debug/event/BaseEvent.js"></script>
+	<script egret="game" src="bin-debug/event/GameDispatcher.js"></script>
 	<script egret="game" src="bin-debug/LoadingUI.js"></script>
 	<script egret="game" src="bin-debug/Main.js"></script>
+	<script egret="game" src="bin-debug/ThemeAdapter.js"></script>
+	<script egret="game" src="bin-debug/ui/earth/EarthItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/ui/earth/EarthManager.js"></script>
+	<script egret="game" src="bin-debug/ui/earth/EarthView.js"></script>
+	<script egret="game" src="bin-debug/ui/earth/FarmlandItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/ui/Ipanel.js"></script>
+	<script egret="game" src="bin-debug/ui/MainView.js"></script>
+	<script egret="game" src="bin-debug/ui/pack/PackItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/ui/pack/PackView.js"></script>
+	<script egret="game" src="bin-debug/utils/BitMapUtil.js"></script>
+	<script egret="game" src="bin-debug/utils/ButtonUtils.js"></script>
+	<script egret="game" src="bin-debug/utils/CustomTimer.js"></script>
+	<script egret="game" src="bin-debug/utils/NumberBar.js"></script>
+	<script egret="game" src="bin-debug/utils/PcHelper.js"></script>
+	<script egret="game" src="bin-debug/utils/SoundManager.js"></script>
+	<script egret="game" src="bin-debug/utils/StringUtils.js"></script>
+	<script egret="game" src="bin-debug/utils/TimerManager.js"></script>
+	<script egret="game" src="bin-debug/utils/TipManager.js"></script>
 	<!--game_files_end-->
 </head>
 <body>
@@ -47,7 +78,7 @@
          data-orientation="auto"
          data-scale-mode="showAll"
          data-frame-rate="30"
-         data-content-width="480"
+         data-content-width="680"
          data-content-height="800"
          data-show-paint-rect="false"
          data-multi-fingered="2"
@@ -55,8 +86,7 @@
          data-show-fps-style="x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.9">
     </div>
     <script>
-        //默认使用 WebGL 渲染模式
-        egret.runEgret({renderMode:"webgl"});
+        egret.runEgret({renderMode:"canvas"});
     </script>
 </body>
 </html>

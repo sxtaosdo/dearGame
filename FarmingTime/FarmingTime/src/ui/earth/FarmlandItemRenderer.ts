@@ -4,12 +4,16 @@
  */
 class FarmlandItemRenderer extends EarthItemRenderer{
     /**
-     * 当前显示植物的图片
+     * 当前种植物的种子数据(当无种植时为null)
      */
-    private pic:string;
+    private seedVo:SeedVo;
+    private plantTxt:egret.TextField;
     
     public constructor(vo:EarthVo) {
-        super(vo,0xaaccff);
+        super(vo,0x663300);
+        this.touchChildren=true;
+        this.touchEnabled=true;
+        this.onAdd();
     }
 
     /**
@@ -33,7 +37,12 @@ class FarmlandItemRenderer extends EarthItemRenderer{
             //1-空闲
             case 1:
                 console.log("展示种植成功画面");
-                console.log("稍后加入种子列表的配置文件，根据种子类型获取种子的剩余生长时间");
+                for(var i: number = 0;i < ConfigModel.instance.seedList.length;i++) {
+                    if(seedType == ConfigModel.instance.seedList[i].seedType) {
+                        this.seedVo = ConfigModel.instance.seedList[i];
+                        break;
+                    }
+                }
                 this.setLandState(2);
                 break;
             //2-种植中
@@ -64,6 +73,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
             case 2:
             //3-种植完成
             case 3:
+                EarthManager.instance.removeTimer(this);
                 this.setLandState(1);
                 break;
         }
@@ -95,7 +105,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         }
     }
     
-    private setLandState(state:number,data?:any):void{
+    private setLandState(state:number):void{
         this.earthVo.state=state;
         switch(state) {
             //0-未购买
@@ -110,17 +120,29 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                 break;
             //2-种植中
             case 2:
-                var vo:SeedVo=data as SeedVo;
-                this.earthVo.currentType = vo.seedType;
-                this.earthVo.lastTime = vo.graduateTime;
-                console.log("稍后加入土地管理类，此处为添加土地管理类的倒计时");
+                if(this.seedVo==null){
+                    console.error("当前种植种子为空");
+                    this.setLandState(1);
+                    return;
+                }
+                this.earthVo.currentType = this.seedVo.seedType;
+                this.earthVo.lastTime = this.seedVo.graduateTime;
+                this.earthVo.graduateState=1;
+                EarthManager.instance.addTimer(this);
                 break;
             //3-种植完成
             case 3:
-                this.earthVo.currentType;
+                if(this.seedVo == null) {
+                    console.error("当前种植种子为空");
+                    this.setLandState(1);
+                    return;
+                }
+                this.earthVo.currentType=this.seedVo.seedType;
+                this.earthVo.graduateState = 0;
                 this.earthVo.lastTime = 0;
                 break;
         }
+        this.drawPlant();
     }
     
     /**
@@ -128,12 +150,65 @@ class FarmlandItemRenderer extends EarthItemRenderer{
      */
     public onUpdate():boolean{
         this.earthVo.lastTime-=1000;
-        console.log("稍后加入不同时期的植物不同的图像");
+        //种植完成
+        if(this.earthVo.lastTime<=0){
+            this.setLandState(3);
+            return true;
+        }
+        //种植进入不同阶段
+        for(var index:number=0;index<this.seedVo.graduateTimePoint.length;index++){
+            if(this.seedVo.graduateTimePoint[index]<this.earthVo.lastTime)
+            {
+                if(this.earthVo.graduateState!=index+1){
+                    this.earthVo.graduateState=index+1;
+                    this.drawPlant();
+                }
+                break;
+            }
+        }
         return true;
     }
     
-    private showPlant():void{
-        console.log("稍后做图像");
+    private drawPlant():void{
+        console.log("二期做图像，一期做成文字版本");
+        if(this.plantTxt==null){
+            this.plantTxt=new egret.TextField();
+            this.plantTxt.width=100;
+            this.plantTxt.height=100;
+            this.plantTxt.size=14;
+            this.addChild(this.plantTxt);
+        }
+        switch(this.earthVo.state) {
+            //0-未购买
+            case 0:
+                console.log("稍后加入购买功能，及解锁田地的条件");
+                this.plantTxt.text="请点击进行解锁";
+                break;
+            //1-空闲
+            case 1:
+                this.plantTxt.text = "空闲";
+                break;
+            //2-种植中
+            case 2:
+                this.plantTxt.text = "植物"+this.earthVo.currentType.toString()+"生长阶段"+this.earthVo.graduateState.toString();
+                break;
+            //3-种植完成
+            case 3:
+                this.plantTxt.text = "植物" + this.earthVo.currentType.toString()+"成熟";
+                break;
+        }
+    }
+    
+    public onAdd(data?: any): void {
+        if(this.earthVo.currentType != 0) {
+            for(var i: number = 0;i < ConfigModel.instance.seedList.length;i++){
+                if(this.earthVo.currentType == ConfigModel.instance.seedList[i].seedType){
+                    this.seedVo = ConfigModel.instance.seedList[i];
+                    break;
+                }
+            }
+        }
+        this.setLandState(this.earthVo.state);
     }
 
     public onRemove(data?: any): void {
