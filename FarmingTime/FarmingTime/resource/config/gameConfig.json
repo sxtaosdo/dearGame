@@ -1,5 +1,6 @@
 {
 	"debug":"true",
+	"gold":10000,
 	"pack": [
 	    {
 		    "index": 1,
@@ -49,124 +50,175 @@
 	],
 	"item": [
 	    {
-		    "itemId": 1,
+		    "id": 10001,
 		    "type": 1,
 			"subType":0,
-            "ownNum": 1,
+			"desc":"斧子",
+			"targetId":0,
+			"targetTool":0,
+			"graduateTimePoint":[],
+			"harvestTimes":0,
+			"gainMinTimes":0,
+			"gainMaxTimes":0,
+			"basePrice":0,
             "maxNum": 1,
-			"soldMoney":-1
+			"canSell":"false",
+			"canConsume":"false"
 		},
 		{
-		    "itemId": 2,
+		    "id": 30001,
 		    "type": 3,
 			"subType":1,
-            "ownNum": 5,
+			"desc":"草种",
+			"targetId":40001,
+			"targetTool":1,
+			"graduateTimePoint":[3000,15000,25000,50000],
+			"harvestTimes":1,
+			"gainMinTimes":1,
+			"gainMaxTimes":2,
+			"basePrice":5,
             "maxNum": 999,
-			"soldMoney":5
+			"canSell":"true",
+			"canConsume":"true"
 		},
 		{
-		    "itemId": 3,
+		    "id": 30002,
 		    "type": 3,
 			"subType":2,
-            "ownNum": 1,
+			"desc":"南瓜种子",
+			"targetId":40002,
+			"targetTool":1,
+			"graduateTimePoint":[15000,100000,200000,500000],
+			"harvestTimes":2,
+			"gainMinTimes":1,
+			"gainMaxTimes":1,
+			"basePrice":50,
             "maxNum": 999,
-			"soldMoney":10
-		}
-	],
-	"seed": [
-	    {
-		    "seedType": 1,
-			"graduateTime":600000,
-            "graduateTimePoint": [590000,390000,200000],
-            "basePrice": 5
+			"canSell":"true",
+			"canConsume":"true"
 		},
 		{
-		    "seedType": 2,
-			"graduateTime":1200000,
-            "graduateTimePoint": [1100000,500000,300000],
-            "basePrice": 50
-		}
+		    "id": 40001,
+		    "type": 4,
+			"subType":1,
+			"desc":"牧草",
+			"targetId":0,
+			"targetTool":0,
+			"graduateTimePoint":[],
+			"harvestTimes":0,
+			"gainMinTimes":0,
+			"gainMaxTimes":0,
+			"basePrice":10,
+            "maxNum": 999,
+			"canSell":"true",
+			"canConsume":"true"
+		},
+		{
+		    "id": 40002,
+		    "type": 4,
+			"subType":2,
+			"desc":"南瓜",
+			"targetId":0,
+			"targetTool":0,
+			"graduateTimePoint":[],
+			"harvestTimes":0,
+			"gainMinTimes":0,
+			"gainMaxTimes":0,
+			"basePrice":500,
+            "maxNum": 999,
+			"canSell":"true",
+			"canConsume":"true"
+		},
 	],
 	"earth":[
 	    {
 		    "id":1,
 			"position":[0,0],
 			"type":1,
-			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 50
+			"state":2,
+			"targetId":30001,
+			"graduateTime":20000,
+			"openPrice": 50
 		},
 		{
 		    "id":2,
 			"position":[0,1],
 			"type":1,
-			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 100
+			"state":1,
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 100
 		},
 		{
 		    "id":3,
 			"position":[0,2],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 200
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 200
 		},
 		{
 		    "id":4,
 			"position":[0,3],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 500
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 500
 		},
 		{
 		    "id":5,
 			"position":[1,0],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 1000
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 1000
 		},
 		{
 		    "id":6,
 			"position":[1,1],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 2000
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 2000
 		},
 		{
 		    "id":7,
 			"position":[1,2],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 5000
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 5000
 		},
 		{
 		    "id":8,
 			"position":[1,3],
 			"type":1,
 			"state":0,
-			"graduateState":0,
-			"currentType":0,
-			"lastTime":0,
-			"basePrice": 10000
+			"targetId":0,
+			"graduateTime":0,
+			"openPrice": 10000
+		}	
+	],
+	"own": [
+	    {
+		    "index": 1,
+			"itemId":10001,
+			"counts":1
+		},
+		{
+		    "index": 2,
+			"itemId":30001,
+			"counts":5
+		},
+		{
+		    "index": 3,
+			"itemId":30002,
+			"counts":2
 		}
 	]
 }

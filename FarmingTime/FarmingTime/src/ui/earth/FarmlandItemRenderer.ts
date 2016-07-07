@@ -19,16 +19,27 @@ class FarmlandItemRenderer extends EarthItemRenderer{
     /**
      * 购买开启土地
      */
-    public open(): void {
-        console.log("消息提示：" + "开启新土地");
-        this.setLandState(1);
+    public open(e:Event): void {
+        if(UserModel.instance.gold>=this.earthVo.basePrice){
+            UserModel.instance.gold-=this.earthVo.basePrice;
+            console.log("消息提示：" + "开启新土地");
+            this.setLandState(1);
+            this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.open,this);
+        }
+        else{
+            console.log("弹出提示面板：" + "金币不足，无法进行购买");
+        }
     }
     
     /**
      * 种植植物
      * @param seedType
      */
-    public plant(seedType:number): void {
+    public plant(e:Event): void {
+        var item: ItemVo = PackView.instance.getItem(GameModel.instance.packIndex);
+        if(item==null||item.type!=3){
+            return;
+        }
         switch(this.earthVo.state) {
             //0-未购买
             case 0:
@@ -36,14 +47,28 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                 break;
             //1-空闲
             case 1:
-                console.log("展示种植成功画面");
+                var seedType: number = item.subType;
                 for(var i: number = 0;i < ConfigModel.instance.seedList.length;i++) {
                     if(seedType == ConfigModel.instance.seedList[i].seedType) {
                         this.seedVo = ConfigModel.instance.seedList[i];
+                        if(!PackView.instance.consume(GameModel.instance.packIndex)){
+                            console.log("弹出提示面板：" + "道具使用失败");
+                            this.seedVo=null;
+                        }
+                        else{
+                            this.earthVo.currentType=seedType;
+                            console.log("消息提示：" + "种植"+seedType.toString()+"成功");
+                        }
                         break;
                     }
                 }
-                this.setLandState(2);
+                if(this.seedVo!=null){
+                    this.setLandState(2);
+                    this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.plant,this);
+                }
+                else{
+                    console.log("弹出提示面板：" + "没有找到该种子"+seedType.toString());
+                }
                 break;
             //2-种植中
             case 2:
@@ -105,6 +130,18 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         }
     }
     
+    private clickPlant(e:Event):void{
+        switch(this.earthVo.state){
+            //正在种植中，只能砍伐
+            case 2:
+                
+                break;
+            //已经成熟，只能收获
+            case 3:
+                break;
+        }
+    }
+    
     private setLandState(state:number):void{
         this.earthVo.state=state;
         switch(state) {
@@ -112,11 +149,13 @@ class FarmlandItemRenderer extends EarthItemRenderer{
             case 0:
                 this.earthVo.currentType=0;
                 this.earthVo.lastTime=0;
+                this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.open,this);
                 break;
             //1-空闲
             case 1:
                 this.earthVo.currentType = 0;
                 this.earthVo.lastTime = 0;
+                this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.plant,this);
                 break;
             //2-种植中
             case 2:
@@ -125,6 +164,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                     this.setLandState(1);
                     return;
                 }
+                this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickPlant,this);
                 this.earthVo.currentType = this.seedVo.seedType;
                 this.earthVo.lastTime = this.seedVo.graduateTime;
                 this.earthVo.graduateState=1;
@@ -181,8 +221,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         switch(this.earthVo.state) {
             //0-未购买
             case 0:
-                console.log("稍后加入购买功能，及解锁田地的条件");
-                this.plantTxt.text="请点击进行解锁";
+                this.plantTxt.text=this.earthVo.basePrice.toString()+"金币解锁";
                 break;
             //1-空闲
             case 1:
@@ -190,7 +229,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                 break;
             //2-种植中
             case 2:
-                this.plantTxt.text = "植物"+this.earthVo.currentType.toString()+"生长阶段"+this.earthVo.graduateState.toString();
+                this.plantTxt.text = "植物"+this.seedVo.descriName.toString()+"生长阶段"+this.earthVo.graduateState.toString();
                 break;
             //3-种植完成
             case 3:

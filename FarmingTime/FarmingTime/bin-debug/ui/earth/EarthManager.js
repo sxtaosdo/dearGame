@@ -43,4 +43,3 @@ var EarthManager = (function () {
     return EarthManager;
 }());
 egret.registerClass(EarthManager,'EarthManager');
-//# sourceMappingURL=EarthManager.js.map

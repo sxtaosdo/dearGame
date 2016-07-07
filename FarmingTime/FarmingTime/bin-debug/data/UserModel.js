@@ -22,6 +22,7 @@ var UserModel = (function () {
             return this._gold;
         }
         ,function (value) {
+            MainView.instance.setGold(value);
             this._gold = value;
         }
     );
@@ -35,6 +36,14 @@ var UserModel = (function () {
             return this._ownerList;
         }
     );
+    p.clearOwnerList = function () {
+        for (var i = 0; i < this._ownerList.length; i++) {
+            if (this._ownerList[i].counts <= 0) {
+                this._ownerList.splice(i);
+                i--;
+            }
+        }
+    };
     d(p, "packList"
         ,function () {
             return this._packList;
@@ -43,4 +52,3 @@ var UserModel = (function () {
     return UserModel;
 }());
 egret.registerClass(UserModel,'UserModel');
-//# sourceMappingURL=UserModel.js.map

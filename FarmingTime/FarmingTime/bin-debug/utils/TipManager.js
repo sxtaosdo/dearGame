@@ -246,4 +246,3 @@ var TipHandler = (function () {
     return TipHandler;
 }());
 egret.registerClass(TipHandler,'TipHandler');
-//# sourceMappingURL=TipManager.js.map

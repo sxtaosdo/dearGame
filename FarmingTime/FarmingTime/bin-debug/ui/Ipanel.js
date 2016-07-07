@@ -7,4 +7,3 @@
 //        public destroy(): void {
 //            
 //            }
-//# sourceMappingURL=Ipanel.js.map

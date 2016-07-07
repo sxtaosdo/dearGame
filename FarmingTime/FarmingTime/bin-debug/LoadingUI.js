@@ -67,4 +67,3 @@ var LoadingUI = (function (_super) {
     return LoadingUI;
 }(eui.Component));
 egret.registerClass(LoadingUI,'LoadingUI',["Ipanel"]);
-//# sourceMappingURL=LoadingUI.js.map

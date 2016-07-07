@@ -21,4 +21,3 @@ var CustomTimer = (function (_super) {
     return CustomTimer;
 }(egret.Timer));
 egret.registerClass(CustomTimer,'CustomTimer');
-//# sourceMappingURL=CustomTimer.js.map

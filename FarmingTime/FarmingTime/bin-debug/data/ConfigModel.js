@@ -4,7 +4,7 @@
  */
 var ConfigModel = (function () {
     function ConfigModel() {
-        this._seedList = []; //种子列表
+        this._itemList = []; //道具列表
         this._debug = false;
     }
     var d = __define,c=ConfigModel,p=c.prototype;
@@ -25,27 +25,44 @@ var ConfigModel = (function () {
         //        for(key in data.prompt){
         //            LoadingUI.instance.pushTip(data.prompt[Number(key)].content);
         //        }
+        UserModel.instance.gold = data.gold;
         var key;
         var i;
+        //道具列表构建
+        for (i = 0; i < data.item.length; i++) {
+            var itemvo = new ItemVo();
+            itemvo.analytic(data.item[i]);
+            this._itemList[itemvo.id.toString()] = itemvo;
+        }
+        //背包列表构建
         for (i = 0; i < data.pack.length; i++) {
             var packvo = new PackVo();
             packvo.analytic(data.pack[i]);
             UserModel.instance.packList.push(packvo);
         }
-        for (i = 0; i < data.item.length; i++) {
-            var itemvo = new ItemVo();
-            itemvo.analytic(data.item[i]);
-            UserModel.instance.ownerList.push(itemvo);
-        }
-        for (i = 0; i < data.seed.length; i++) {
-            var seedvo = new SeedVo();
-            seedvo.analytic(data.seed[i]);
-            this.seedList.push(seedvo);
-        }
+        //土地列表构建
         for (i = 0; i < data.earth.length; i++) {
             var earthvo = new EarthVo();
             earthvo.analytic(data.earth[i]);
             UserModel.instance.earthList.push(earthvo);
+        }
+        //拥有物品列表构建
+        for (i = 0; i < data.own.length; i++) {
+            var ownvo = new OwnVo();
+            ownvo.analytic(data.own[i]);
+            UserModel.instance.ownerList.push(ownvo);
+        }
+        UserModel.instance.ownerList.sort(this.ownListCompare);
+    };
+    p.ownListCompare = function (a, b) {
+        if (a.itemId > b.itemId) {
+            return 1;
+        }
+        else if (a.itemId == b.itemId && a.counts >= b.counts) {
+            return 1;
+        }
+        else {
+            return 0;
         }
     };
     d(p, "debug"
@@ -53,12 +70,11 @@ var ConfigModel = (function () {
             return this._debug;
         }
     );
-    d(p, "seedList"
+    d(p, "itemList"
         ,function () {
-            return this._seedList;
+            return this._itemList;
         }
     );
     return ConfigModel;
 }());
 egret.registerClass(ConfigModel,'ConfigModel');
-//# sourceMappingURL=ConfigModel.js.map

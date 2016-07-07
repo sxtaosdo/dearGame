@@ -4,6 +4,7 @@
  *
  */
 var EarthVo = (function () {
+    /************************************/
     function EarthVo() {
     }
     var d = __define,c=EarthVo,p=c.prototype;
@@ -12,12 +13,10 @@ var EarthVo = (function () {
         this.position = new egret.Point(data.position[0], data.position[1]);
         this.type = data.type;
         this.state = data.state;
-        this.graduateState = data.graduateState;
-        this.currentType = data.currentType;
-        this.lastTime = data.lastTime;
-        this.basePrice = data.basePrice;
+        this.targetId = data.targetId;
+        this.graduateTime = data.graduateTime;
+        this.openPrice = data.openPrice;
     };
     return EarthVo;
 }());
 egret.registerClass(EarthVo,'EarthVo');
-//# sourceMappingURL=EarthVo.js.map

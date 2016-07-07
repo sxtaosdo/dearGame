@@ -4,7 +4,7 @@
  */
 class PackItemRenderer extends egret.Sprite{
     protected startX:number=5;
-    protected startY:number=5;
+    protected startY:number=20;
     protected gridWidth:number=45;
     protected gridHeight:number=45;
     protected gapX:number=10;
@@ -13,8 +13,8 @@ class PackItemRenderer extends egret.Sprite{
     private bgLight:egret.Sprite;
     
     private packVo:PackVo;
-    private _itemId:number;
-    private itemVo:ItemVo;
+    private _itemId:number=0;
+    public itemVo:ItemVo;
     private isSelect:boolean=false;
     private itemTxt:egret.TextField;
     private numTxt:egret.TextField;
@@ -30,17 +30,21 @@ class PackItemRenderer extends egret.Sprite{
         this.drawBg(color);
         //之后会改成图像化
         this.itemTxt=new egret.TextField();
-        this.itemTxt.size=16;
+        this.itemTxt.size=12;
+        this.itemTxt.textAlign="center";
+        this.itemTxt.textColor=0x000000;
         this.itemTxt.width=this.gridWidth-10;
         this.itemTxt.height=50;
         this.itemTxt.x=5;
-        this.itemTxt.y=10;
+        this.itemTxt.y=5;
         this.addChild(this.itemTxt);
         
         this.numTxt = new egret.TextField();
-        this.numTxt.size = 16;
+        this.numTxt.size = 10;
         this.numTxt.width = 20;
-        this.numTxt.height = 20;
+        this.numTxt.height = 10;
+        this.numTxt.textColor=0x000000;
+        this.numTxt.textAlign="right";
         this.numTxt.x = this.gridWidth-this.numTxt.width;
         this.numTxt.y = this.gridHeight-this.numTxt.height;
         this.addChild(this.numTxt);
@@ -55,19 +59,29 @@ class PackItemRenderer extends egret.Sprite{
         if(itemId==0){
             this.itemVo=null;
         }
-        var isFind:boolean=false;
-        for(var i:number=0;i<UserModel.instance.ownerList.length;i++){
-            if(UserModel.instance.ownerList[i].itemId==this._itemId)
-            {
-                this.itemVo=UserModel.instance.ownerList[i];
-                isFind=true;
-                break;
+        else{
+            var isFind: boolean = false;
+            for(var i: number = 0;i < UserModel.instance.ownerList.length;i++) {
+                if(UserModel.instance.ownerList[i].itemId == this._itemId) {
+                    this.itemVo = UserModel.instance.ownerList[i];
+                    isFind = true;
+                    break;
+                }
+            }
+            if(!isFind) {
+                console.error("没有找到相关背包物品");
+                this._itemId = 0;
+                this.itemVo = null;
             }
         }
-        if(!isFind){
-            console.error("没有找到相关背包物品");
-            this._itemId=0;
-            this.itemVo=null;
+        
+        if(this.itemVo!=null){
+            this.itemTxt.text=this.itemVo.descriName;
+            this.numTxt.text=this.itemVo.ownNum.toString();
+        }
+        else{
+            this.itemTxt.text="";
+            this.numTxt.text="";
         }
     }
     
@@ -103,6 +117,17 @@ class PackItemRenderer extends egret.Sprite{
         }
     }
     
+    private clickToOpen(e: Event): void {
+        if(UserModel.instance.gold>=this.packVo.openPrice){
+            console.log("消息提示：" + "开启新背包");
+            UserModel.instance.gold=UserModel.instance.gold-this.packVo.openPrice;
+            this.setOpen(true);
+        }
+        else{
+            console.log("弹出提示面板：" + "金币不足，无法购买");
+        }
+    }
+    
     public setSelect(isSelect:boolean):void{
         this.isSelect=isSelect;
         if(this.isSelect){
@@ -113,11 +138,26 @@ class PackItemRenderer extends egret.Sprite{
         }
     }
     
+    public setOpen(isOpen:boolean):void{
+        this.packVo.isOpen=isOpen;
+        if(isOpen){
+            this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.clickToOpen,this);
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickToSelect,this);
+            this.itemTxt.text="";
+            this.numTxt.text="";
+        }
+        else{
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickToOpen,this);
+            this.itemTxt.text=this.packVo.openPrice.toString()+"金币开启";
+            this.numTxt.text="";
+        }
+    }
+    
     public onAdd(data?: any):void{
         console.log("稍后做背包购买开放功能");
         this.touchChildren=true;
         this.touchEnabled=true;
-        this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickToSelect,this);
+        this.setOpen(this.packVo.isOpen);      
         this.setSelect(false);
     }
 

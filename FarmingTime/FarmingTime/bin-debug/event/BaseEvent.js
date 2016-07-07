@@ -11,4 +11,3 @@ var BaseEvent = (function () {
     return BaseEvent;
 }());
 egret.registerClass(BaseEvent,'BaseEvent');
-//# sourceMappingURL=BaseEvent.js.map

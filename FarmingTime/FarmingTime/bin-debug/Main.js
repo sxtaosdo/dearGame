@@ -79,7 +79,7 @@ var Main = (function (_super) {
         }
         GameDispatcher.instance.removeEventListener(BaseEvent.ASSEST_LOAD_COMPLETE_EVENT, this.assestLoadComplete, this);
         if (this.mainView == null) {
-            this.mainView = new MainView();
+            this.mainView = MainView.instance;
         }
         this.addChild(this.mainView);
         this.mainView.onAdd();
@@ -87,4 +87,3 @@ var Main = (function (_super) {
     return Main;
 }(eui.UILayer));
 egret.registerClass(Main,'Main');
-//# sourceMappingURL=Main.js.map

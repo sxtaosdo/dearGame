@@ -27,10 +27,11 @@ var GameModel = (function () {
                 PackView.instance.packList[this._packIndex - 1].setSelect(false);
             }
             this._packIndex = value;
-            PackView.instance.packList[this._packIndex - 1].setSelect(true);
+            if (value != 0) {
+                PackView.instance.packList[this._packIndex - 1].setSelect(true);
+            }
         }
     );
     return GameModel;
 }());
 egret.registerClass(GameModel,'GameModel');
-//# sourceMappingURL=GameModel.js.map

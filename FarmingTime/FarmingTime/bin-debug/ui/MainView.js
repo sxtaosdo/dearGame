@@ -17,6 +17,20 @@ var MainView = (function (_super) {
         }
     );
     p.onAdd = function (data) {
+        if (this.goldTxt == null) {
+            this.goldTxt = new egret.TextField();
+            this.goldTxt.size = 14;
+            this.goldTxt.textAlign = "left";
+            this.goldTxt.textColor = 0xFFFF00;
+            this.goldTxt.width = 160;
+            this.goldTxt.height = 50;
+            this.goldTxt.x = 5;
+            this.goldTxt.y = 5;
+            this.addChild(this.goldTxt);
+            if (UserModel.instance.gold != null) {
+                this.setGold(UserModel.instance.gold);
+            }
+        }
         if (this.earthView == null) {
             this.earthView = new EarthView();
         }
@@ -28,6 +42,11 @@ var MainView = (function (_super) {
         this.addChild(this.packView);
         this.packView.onAdd();
     };
+    p.setGold = function (gold) {
+        if (this.goldTxt != null) {
+            this.goldTxt.text = "拥有金币：" + gold.toString();
+        }
+    };
     p.onRemove = function (data) {
     };
     p.destroy = function (data) {
@@ -36,4 +55,3 @@ var MainView = (function (_super) {
     return MainView;
 }(egret.Sprite));
 egret.registerClass(MainView,'MainView',["Ipanel"]);
-//# sourceMappingURL=MainView.js.map
