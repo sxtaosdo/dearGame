@@ -28,6 +28,8 @@ class ItemVo {
     public basePrice: number;
     //背包单格可放置最大数量
     public maxNum: number;
+    //收获可获得经验值
+    public gainExp:number;
     //是否可贩卖或丢弃
     public canSell: boolean;
     //是否可消耗
@@ -60,6 +62,7 @@ class ItemVo {
         this.gainMaxTimes = data.gainMaxTimes;
         this.basePrice = data.basePrice;
         this.maxNum = data.maxNum;
+        this.gainExp=data.gainExp;
         this.canSell = data.canSell;
         this.canConsume = data.canConsume;
 	}

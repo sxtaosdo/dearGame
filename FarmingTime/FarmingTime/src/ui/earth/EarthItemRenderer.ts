@@ -3,8 +3,8 @@
  * @author anj
  */
 class EarthItemRenderer extends egret.Sprite{
-    protected startX:number=50;
-    protected startY:number=100;
+    protected startX:number=5;
+    protected startY:number=200;
     protected gridWidth:number=100;
     protected gridHeight:number=100;
     protected gapX:number=10;

@@ -1,6 +1,9 @@
 {
 	"debug":"true",
 	"gold":100000,
+	"farmLevel":1,
+	"farmExp":0,
+	"farmLevelList":[100,200,500,1000,2000,5000,10000,20000,50000],
 	"pack": [
 	    {
 		    "index": 1,
@@ -46,6 +49,110 @@
 		    "index": 9,
 			"isOpen":false,
             "openPrice": 100000
+		},
+		{
+		    "index": 10,
+			"isOpen":false,
+            "openPrice": 200000
+		},
+		{
+		    "index": 11,
+			"isOpen":false,
+            "openPrice": 500000
+		},
+		{
+		    "index": 12,
+			"isOpen":false,
+            "openPrice": 1000000
+		},
+		{
+		    "index": 13,
+			"isOpen":false,
+            "openPrice": 1500000
+		},
+		{
+		    "index": 14,
+			"isOpen":false,
+            "openPrice": 2000000
+		},
+		{
+		    "index": 15,
+			"isOpen":false,
+            "openPrice": 2500000
+		},
+		{
+		    "index": 16,
+			"isOpen":false,
+            "openPrice": 3000000
+		},
+		{
+		    "index": 17,
+			"isOpen":false,
+            "openPrice": 4000000
+		},
+		{
+		    "index": 18,
+			"isOpen":false,
+            "openPrice": 5000000
+		},
+		{
+		    "index": 19,
+			"isOpen":false,
+            "openPrice": 10000000
+		},{
+		    "index": 20,
+			"isOpen":false,
+            "openPrice": 15000000
+		},
+		{
+		    "index": 21,
+			"isOpen":false,
+            "openPrice": 20000000
+		},
+		{
+		    "index": 22,
+			"isOpen":false,
+            "openPrice": 25000000
+		},
+		{
+		    "index": 23,
+			"isOpen":false,
+            "openPrice": 30000000
+		},
+		{
+		    "index": 24,
+			"isOpen":false,
+            "openPrice": 35000000
+		},
+		{
+		    "index": 25,
+			"isOpen":false,
+            "openPrice": 40000000
+		},
+		{
+		    "index": 26,
+			"isOpen":false,
+            "openPrice": 50000000
+		},
+		{
+		    "index": 27,
+			"isOpen":false,
+            "openPrice": 60000000
+		},
+		{
+		    "index": 28,
+			"isOpen":false,
+            "openPrice": 70000000
+		},
+		{
+		    "index": 29,
+			"isOpen":false,
+            "openPrice": 80000000
+		},
+		{
+		    "index": 30,
+			"isOpen":false,
+            "openPrice": 100000000
 		}
 	],
 	"item": [
@@ -78,6 +185,7 @@
 			"gainMaxTimes":2,
 			"basePrice":5,
             "maxNum": 999,
+			"gainExp":100,
 			"canSell":"true",
 			"canConsume":"true"
 		},
@@ -94,6 +202,7 @@
 			"gainMaxTimes":1,
 			"basePrice":50,
             "maxNum": 999,
+			"gainExp":500,
 			"canSell":"true",
 			"canConsume":"true"
 		},
@@ -210,7 +319,127 @@
 			"graduateTime":0,
 			"harvestTimes":0,
 			"openPrice": 10000
-		}	
+		},	
+		{
+		    "id":9,
+			"position":[2,0],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 1000
+		},
+		{
+		    "id":10,
+			"position":[2,1],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 2000
+		},
+		{
+		    "id":11,
+			"position":[2,2],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 5000
+		},
+		{
+		    "id":12,
+			"position":[2,3],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 10000
+		},
+{
+		    "id":13,
+			"position":[3,0],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 1000
+		},
+		{
+		    "id":14,
+			"position":[3,1],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 2000
+		},
+		{
+		    "id":15,
+			"position":[3,2],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 5000
+		},
+		{
+		    "id":16,
+			"position":[3,3],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 10000
+		},
+{
+		    "id":17,
+			"position":[4,0],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 1000
+		},
+		{
+		    "id":18,
+			"position":[4,1],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 2000
+		},
+		{
+		    "id":19,
+			"position":[4,2],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 5000
+		},
+		{
+		    "id":20,
+			"position":[4,3],
+			"type":1,
+			"state":0,
+			"targetId":0,
+			"graduateTime":0,
+			"harvestTimes":0,
+			"openPrice": 10000
+		}		
 	],
 	"own": [
 	    {

@@ -22,6 +22,7 @@ var ItemVo = (function () {
         this.gainMaxTimes = data.gainMaxTimes;
         this.basePrice = data.basePrice;
         this.maxNum = data.maxNum;
+        this.gainExp = data.gainExp;
         this.canSell = data.canSell;
         this.canConsume = data.canConsume;
     };

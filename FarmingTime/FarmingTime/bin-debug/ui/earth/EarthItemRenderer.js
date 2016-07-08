@@ -6,8 +6,8 @@ var EarthItemRenderer = (function (_super) {
     __extends(EarthItemRenderer, _super);
     function EarthItemRenderer(vo, color) {
         _super.call(this);
-        this.startX = 50;
-        this.startY = 100;
+        this.startX = 5;
+        this.startY = 200;
         this.gridWidth = 100;
         this.gridHeight = 100;
         this.gapX = 10;

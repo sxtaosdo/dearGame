@@ -26,6 +26,47 @@ var UserModel = (function () {
             this._gold = value;
         }
     );
+    d(p, "farmlevel"
+        ,function () {
+            return this._farmlevel;
+        }
+        ,function (value) {
+            this._farmlevel = value;
+            MainView.instance.setFarmLevel(value);
+        }
+    );
+    p.setFarmExp = function (currentExp, requiredExp) {
+        if (requiredExp === void 0) { requiredExp = 0; }
+        this._farmCurrentExp = currentExp;
+        if (requiredExp != 0) {
+            this._farmRequiredExp = requiredExp;
+        }
+        //升级控制
+        if (this._farmCurrentExp >= this._farmRequiredExp) {
+            for (var i = this._farmlevel - 1; i < ConfigModel.instance.farmLevelList.length; i++) {
+                if (this._farmlevel > ConfigModel.instance.farmLevelList[i]) {
+                    this._farmlevel -= ConfigModel.instance.farmLevelList[i];
+                    continue;
+                }
+                else {
+                    this.farmlevel = i + 1;
+                    this.setFarmExp(this._farmCurrentExp, ConfigModel.instance.farmLevelList[i]);
+                    return;
+                }
+            }
+        }
+        MainView.instance.setFarmExp(this._farmCurrentExp, this._farmRequiredExp);
+    };
+    d(p, "farmCurrentExp"
+        ,function () {
+            return this._farmCurrentExp;
+        }
+    );
+    d(p, "farmRequiredExp"
+        ,function () {
+            return this._farmRequiredExp;
+        }
+    );
     d(p, "earthList"
         ,function () {
             return this._earthList;

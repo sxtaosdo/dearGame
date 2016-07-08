@@ -8,6 +8,7 @@ class PackItemRenderer extends egret.Sprite{
     protected gridWidth:number=45;
     protected gridHeight:number=45;
     protected gapX:number=10;
+    protected gapY:number=10;
     protected gridColor:number=0xffffff;
     
     private bgLight:egret.Sprite;
@@ -21,15 +22,15 @@ class PackItemRenderer extends egret.Sprite{
     public constructor(vo:PackVo,color?:number) {
         super();
         this.packVo=vo;
-        this.x=this.startX+(vo.index-1)*(this.gridWidth+this.gapX);
-        this.y=this.startY;
+        this.x=this.startX+((vo.index-1)%10)*(this.gridWidth+this.gapX);
+        this.y=this.startY+Math.floor((vo.index-1)/10)*(this.gridHeight+this.gapY);
         if(color==null){
             color=this.gridColor;
         }
         this.drawBg(color);
         //之后会改成图像化
         this.itemTxt=new egret.TextField();
-        this.itemTxt.size=12;
+        this.itemTxt.size=10;
         this.itemTxt.textAlign="center";
         this.itemTxt.textColor=0x000000;
         this.itemTxt.width=this.gridWidth-10;
@@ -139,7 +140,7 @@ class PackItemRenderer extends egret.Sprite{
         }
         else{
             this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickToOpen,this);
-            this.itemTxt.text=this.packVo.openPrice.toString()+"金币开启";
+            this.itemTxt.text=StringUtils.getStrByUnits(this.packVo.openPrice)+"金币开启";
             this.numTxt.text="";
         }
     }

@@ -5,6 +5,7 @@
 class ConfigModel {
     private static _instance: ConfigModel;
     private _itemList: Array<ItemVo>=[];//道具列表
+    private _farmLevelList:Array<number>=[];//农业经验升级列表
     
     private _debug:boolean=false;
     
@@ -28,6 +29,9 @@ class ConfigModel {
 //            LoadingUI.instance.pushTip(data.prompt[Number(key)].content);
 //        }
         UserModel.instance.gold=data.gold;
+        UserModel.instance.farmlevel=data.farmLevel;
+        this._farmLevelList = data.farmLevelList;
+        UserModel.instance.setFarmExp(data.farmExp,data.farmLevelList[data.farmLevel-1]);
         var key:string;
         var i:number;
         //道具列表构建
@@ -75,5 +79,9 @@ class ConfigModel {
     
     public get itemList(): Array<ItemVo> {
         return this._itemList;
+    }
+    
+    public get farmLevelList(): Array<number> {
+        return this._farmLevelList;
     }
 }

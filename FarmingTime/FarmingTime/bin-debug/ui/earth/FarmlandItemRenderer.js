@@ -115,13 +115,14 @@ var FarmlandItemRenderer = (function (_super) {
                 break;
             //3-种植完成
             case 3:
-                console.log("消息提示：" + "收获XXX");
                 var counts = this.item.gainMinTimes + Math.floor(Math.random() * (this.item.gainMaxTimes - this.item.gainMinTimes));
                 if (!PackView.instance.gains(GameModel.instance.packIndex, this.item.targetId, counts)) {
                     console.log("弹出提示面板：" + "系统混乱，收获失败");
                     this.setLandState(1);
                     return;
                 }
+                console.log("消息提示：" + "收获XXX");
+                UserModel.instance.setFarmExp(UserModel.instance.farmCurrentExp + this.item.gainExp);
                 this.earthVo.harvestTimes++;
                 //如果当前种植的植物收获次数大于或等于最大收获次数，则不能再次土地置空
                 if (this.earthVo.harvestTimes >= this.item.harvestTimes) {
@@ -234,7 +235,7 @@ var FarmlandItemRenderer = (function (_super) {
         switch (this.earthVo.state) {
             //0-未购买
             case 0:
-                this.plantTxt.text = this.earthVo.openPrice.toString() + "金币解锁";
+                this.plantTxt.text = StringUtils.getStrByUnits(this.earthVo.openPrice) + "金币解锁";
                 break;
             //1-空闲
             case 1:

@@ -5,6 +5,7 @@
 var ConfigModel = (function () {
     function ConfigModel() {
         this._itemList = []; //道具列表
+        this._farmLevelList = []; //农业经验升级列表
         this._debug = false;
     }
     var d = __define,c=ConfigModel,p=c.prototype;
@@ -26,6 +27,9 @@ var ConfigModel = (function () {
         //            LoadingUI.instance.pushTip(data.prompt[Number(key)].content);
         //        }
         UserModel.instance.gold = data.gold;
+        UserModel.instance.farmlevel = data.farmLevel;
+        this._farmLevelList = data.farmLevelList;
+        UserModel.instance.setFarmExp(data.farmExp, data.farmLevelList[data.farmLevel - 1]);
         var key;
         var i;
         //道具列表构建
@@ -73,6 +77,11 @@ var ConfigModel = (function () {
     d(p, "itemList"
         ,function () {
             return this._itemList;
+        }
+    );
+    d(p, "farmLevelList"
+        ,function () {
+            return this._farmLevelList;
         }
     );
     return ConfigModel;

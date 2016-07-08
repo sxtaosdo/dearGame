@@ -11,18 +11,19 @@ var PackItemRenderer = (function (_super) {
         this.gridWidth = 45;
         this.gridHeight = 45;
         this.gapX = 10;
+        this.gapY = 10;
         this.gridColor = 0xffffff;
         this.isSelect = false;
         this.packVo = vo;
-        this.x = this.startX + (vo.index - 1) * (this.gridWidth + this.gapX);
-        this.y = this.startY;
+        this.x = this.startX + ((vo.index - 1) % 10) * (this.gridWidth + this.gapX);
+        this.y = this.startY + Math.floor((vo.index - 1) / 10) * (this.gridHeight + this.gapY);
         if (color == null) {
             color = this.gridColor;
         }
         this.drawBg(color);
         //之后会改成图像化
         this.itemTxt = new egret.TextField();
-        this.itemTxt.size = 12;
+        this.itemTxt.size = 10;
         this.itemTxt.textAlign = "center";
         this.itemTxt.textColor = 0x000000;
         this.itemTxt.width = this.gridWidth - 10;
@@ -125,7 +126,7 @@ var PackItemRenderer = (function (_super) {
         }
         else {
             this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickToOpen, this);
-            this.itemTxt.text = this.packVo.openPrice.toString() + "金币开启";
+            this.itemTxt.text = StringUtils.getStrByUnits(this.packVo.openPrice) + "金币开启";
             this.numTxt.text = "";
         }
     };
