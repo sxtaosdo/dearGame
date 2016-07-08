@@ -28,3 +28,4 @@ var ItemVo = (function () {
     return ItemVo;
 }());
 egret.registerClass(ItemVo,'ItemVo');
+//# sourceMappingURL=ItemVo.js.map

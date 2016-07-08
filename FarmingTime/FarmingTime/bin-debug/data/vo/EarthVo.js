@@ -15,8 +15,10 @@ var EarthVo = (function () {
         this.state = data.state;
         this.targetId = data.targetId;
         this.graduateTime = data.graduateTime;
+        this.harvestTimes = data.harvestTimes;
         this.openPrice = data.openPrice;
     };
     return EarthVo;
 }());
 egret.registerClass(EarthVo,'EarthVo');
+//# sourceMappingURL=EarthVo.js.map

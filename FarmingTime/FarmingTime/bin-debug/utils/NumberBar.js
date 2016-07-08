@@ -310,3 +310,4 @@ var NumberBar = (function (_super) {
     return NumberBar;
 }(egret.DisplayObjectContainer));
 egret.registerClass(NumberBar,'NumberBar');
+//# sourceMappingURL=NumberBar.js.map

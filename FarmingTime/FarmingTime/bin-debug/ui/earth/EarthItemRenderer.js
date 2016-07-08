@@ -40,3 +40,4 @@ var EarthItemRenderer = (function (_super) {
     return EarthItemRenderer;
 }(egret.Sprite));
 egret.registerClass(EarthItemRenderer,'EarthItemRenderer');
+//# sourceMappingURL=EarthItemRenderer.js.map

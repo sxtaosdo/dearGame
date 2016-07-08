@@ -4,7 +4,7 @@
  */
 class ConfigModel {
     private static _instance: ConfigModel;
-    private _itemList: Dictionary = [];//道具列表
+    private _itemList: Array<ItemVo>=[];//道具列表
     
     private _debug:boolean=false;
     
@@ -34,7 +34,7 @@ class ConfigModel {
         for(i = 0;i < data.item.length;i++) {
             var itemvo: ItemVo = new ItemVo();
             itemvo.analytic(data.item[i]);
-            this._itemList[itemvo.id.toString()]=itemvo;
+            this._itemList.push(itemvo);
         }
         //背包列表构建
         for(i = 0;i < data.pack.length;i++) {
@@ -73,7 +73,7 @@ class ConfigModel {
         return this._debug;
     }
     
-    public get itemList(): Dictionary {
+    public get itemList(): Array<ItemVo> {
         return this._itemList;
     }
 }

@@ -20,3 +20,4 @@ var BitMapUtil = (function () {
     return BitMapUtil;
 }());
 egret.registerClass(BitMapUtil,'BitMapUtil');
+//# sourceMappingURL=BitMapUtil.js.map

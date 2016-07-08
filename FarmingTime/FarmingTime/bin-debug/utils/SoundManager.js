@@ -91,3 +91,4 @@ var SoundChannelVo = (function () {
     return SoundChannelVo;
 }());
 egret.registerClass(SoundChannelVo,'SoundChannelVo');
+//# sourceMappingURL=SoundManager.js.map

@@ -14,29 +14,47 @@ var PackView = (function (_super) {
             return this._instance;
         }
     );
-    p.getItem = function (index) {
-        if (index < 0 || index > this.packList.length - 1) {
-            return null;
-        }
-        var item = this.packList[index - 1].itemVo;
-        return item;
-    };
     /**
      * 消耗背包中道具
      */
     p.consume = function (index) {
-        if (index < 0 || index > this.packList.length - 1) {
-            return false;
-        }
-        var item = this.packList[index - 1].itemVo;
-        if (!item.canConsume) {
+        var ownvo = this.packList[index - 1].ownItem;
+        if (ownvo == null || !GameUtil.getItemById(ownvo.itemId).canConsume) {
             return false;
         }
         else {
-            item.ownNum--;
-            if (item.ownNum <= 0) {
-                this.packList[index - 1].itemId = 0;
+            ownvo.counts--;
+            if (ownvo.counts <= 0) {
+                ownvo = null;
                 UserModel.instance.clearOwnerList();
+            }
+            this.packList[index - 1].ownItem = ownvo;
+            return true;
+        }
+    };
+    /**
+     * 获得物品放入背包
+     * @param index      放入背包位置
+     * @param itemId     放入背包道具id
+     * @param itemCounts 放入背包道具个数
+     */
+    p.gains = function (index, itemId, itemCounts) {
+        var ownvo;
+        if (this.packList[index - 1].ownItem != null && this.packList[index - 1].ownItem.itemId != itemId) {
+            console.error("出错了，不同的物品不能放入背包同一格子");
+            return false;
+        }
+        else if (this.packList[index - 1].ownItem != null && this.packList[index - 1].ownItem.itemId == itemId) {
+            ownvo = this.packList[index - 1].ownItem;
+            ownvo.counts += itemCounts;
+            this.packList[index - 1].ownItem = ownvo;
+            return true;
+        }
+        else if (this.packList[index - 1].ownItem == null) {
+            ownvo = UserModel.instance.addOwnvo(itemId, itemCounts);
+            this.packList[index - 1].ownItem = ownvo;
+            if (index == GameModel.instance.packIndex) {
+                GameModel.instance.ownItem = ownvo;
             }
             return true;
         }
@@ -50,8 +68,8 @@ var PackView = (function (_super) {
                 this.addChild(pack);
                 pack.onAdd();
                 this.packList.push(pack);
-                if (UserModel.instance.ownerList[i] != null) {
-                    pack.itemId = UserModel.instance.ownerList[i].itemId;
+                if (UserModel.instance.ownerList[i] != null && vo.isOpen) {
+                    pack.ownItem = UserModel.instance.ownerList[i];
                 }
             }
         }
@@ -64,3 +82,4 @@ var PackView = (function (_super) {
     return PackView;
 }(egret.Sprite));
 egret.registerClass(PackView,'PackView',["Ipanel"]);
+//# sourceMappingURL=PackView.js.map

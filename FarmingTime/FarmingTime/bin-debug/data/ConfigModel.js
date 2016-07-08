@@ -32,7 +32,7 @@ var ConfigModel = (function () {
         for (i = 0; i < data.item.length; i++) {
             var itemvo = new ItemVo();
             itemvo.analytic(data.item[i]);
-            this._itemList[itemvo.id.toString()] = itemvo;
+            this._itemList.push(itemvo);
         }
         //背包列表构建
         for (i = 0; i < data.pack.length; i++) {
@@ -78,3 +78,4 @@ var ConfigModel = (function () {
     return ConfigModel;
 }());
 egret.registerClass(ConfigModel,'ConfigModel');
+//# sourceMappingURL=ConfigModel.js.map

@@ -142,3 +142,4 @@ var PcMouseHelper = (function () {
     return PcMouseHelper;
 }());
 egret.registerClass(PcMouseHelper,'PcMouseHelper');
+//# sourceMappingURL=PcHelper.js.map

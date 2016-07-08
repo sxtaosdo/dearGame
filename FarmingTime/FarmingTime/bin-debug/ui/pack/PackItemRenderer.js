@@ -12,7 +12,6 @@ var PackItemRenderer = (function (_super) {
         this.gridHeight = 45;
         this.gapX = 10;
         this.gridColor = 0xffffff;
-        this._itemId = 0;
         this.isSelect = false;
         this.packVo = vo;
         this.x = this.startX + (vo.index - 1) * (this.gridWidth + this.gapX);
@@ -42,33 +41,15 @@ var PackItemRenderer = (function (_super) {
         this.addChild(this.numTxt);
     }
     var d = __define,c=PackItemRenderer,p=c.prototype;
-    d(p, "itemId"
+    d(p, "ownItem"
         ,function () {
-            return this._itemId;
+            return this._ownItem;
         }
-        ,function (itemId) {
-            this._itemId = itemId;
-            if (itemId == 0) {
-                this.itemVo = null;
-            }
-            else {
-                var isFind = false;
-                for (var i = 0; i < UserModel.instance.ownerList.length; i++) {
-                    if (UserModel.instance.ownerList[i].itemId == this._itemId) {
-                        this.itemVo = UserModel.instance.ownerList[i];
-                        isFind = true;
-                        break;
-                    }
-                }
-                if (!isFind) {
-                    console.error("没有找到相关背包物品");
-                    this._itemId = 0;
-                    this.itemVo = null;
-                }
-            }
-            if (this.itemVo != null) {
-                this.itemTxt.text = this.itemVo.descriName;
-                this.numTxt.text = this.itemVo.ownNum.toString();
+        ,function (value) {
+            this._ownItem = value;
+            if (this._ownItem != null) {
+                this.itemTxt.text = GameUtil.getItemById(this._ownItem.itemId).desc;
+                this.numTxt.text = this._ownItem.counts.toString();
             }
             else {
                 this.itemTxt.text = "";
@@ -95,10 +76,19 @@ var PackItemRenderer = (function (_super) {
     p.clickToSelect = function (e) {
         this.isSelect = !this.isSelect;
         if (this.isSelect) {
-            //如果原格子有物品且新格子无物品，则原格子物品移动到新格子
-            if (this.itemId == 0 && GameModel.instance.packIndex > 0 && PackView.instance.packList[GameModel.instance.packIndex - 1].itemId != 0) {
-                this.itemId = PackView.instance.packList[GameModel.instance.packIndex - 1].itemId;
-                PackView.instance.packList[GameModel.instance.packIndex - 1].itemId = 0;
+            //            //如果原格子有物品且新格子无物品，则原格子物品移动到新格子
+            //            if(GameModel.instance.packIndex > 0 &&this.ownItem==null &&GameModel.instance.ownItem!=null){
+            //                this.ownItem = GameModel.instance.ownItem;
+            //                PackView.instance.packList[GameModel.instance.packIndex - 1].ownItem=null;
+            //            }
+            //如果原格子有物品且新格子有物品且物品相同则合并到新格子
+            if (GameModel.instance.packIndex > 0 && this.ownItem != null && GameModel.instance.ownItem != null && this.ownItem.itemId == GameModel.instance.ownItem.itemId) {
+                var ownItem = this.ownItem;
+                ownItem.counts += GameModel.instance.ownItem.counts;
+                this.ownItem = ownItem;
+                GameModel.instance.ownItem.counts = 0;
+                PackView.instance.packList[GameModel.instance.packIndex - 1].ownItem = null;
+                UserModel.instance.clearOwnerList();
             }
             GameModel.instance.packIndex = this.packVo.index;
         }
@@ -155,3 +145,4 @@ var PackItemRenderer = (function (_super) {
     return PackItemRenderer;
 }(egret.Sprite));
 egret.registerClass(PackItemRenderer,'PackItemRenderer');
+//# sourceMappingURL=PackItemRenderer.js.map

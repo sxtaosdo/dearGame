@@ -29,6 +29,10 @@ class EarthVo {
      * 生长时间(毫秒)，不在生长中为0
      */
     public graduateTime: number;
+    /**
+     * 已经收获的次数，初始为0
+     */
+    public harvestTimes:number;
     //基础价格(科技发展后会减少，后期实现，目前只有基础价格)
     public openPrice: number;
     
@@ -49,6 +53,7 @@ class EarthVo {
         this.state = data.state;
         this.targetId = data.targetId;
         this.graduateTime = data.graduateTime;
+        this.harvestTimes = data.harvestTimes;
         this.openPrice = data.openPrice;
     }
 }

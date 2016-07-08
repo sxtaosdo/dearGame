@@ -15,3 +15,4 @@ var PackVo = (function () {
     return PackVo;
 }());
 egret.registerClass(PackVo,'PackVo');
+//# sourceMappingURL=PackVo.js.map

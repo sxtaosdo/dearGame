@@ -30,3 +30,4 @@ var GameDispatcher = (function (_super) {
     return GameDispatcher;
 }(egret.EventDispatcher));
 egret.registerClass(GameDispatcher,'GameDispatcher');
+//# sourceMappingURL=GameDispatcher.js.map

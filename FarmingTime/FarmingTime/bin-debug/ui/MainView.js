@@ -55,3 +55,4 @@ var MainView = (function (_super) {
     return MainView;
 }(egret.Sprite));
 egret.registerClass(MainView,'MainView',["Ipanel"]);
+//# sourceMappingURL=MainView.js.map

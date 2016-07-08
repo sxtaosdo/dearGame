@@ -25,13 +25,24 @@ var GameModel = (function () {
             }
             if (this._packIndex != 0) {
                 PackView.instance.packList[this._packIndex - 1].setSelect(false);
+                this.ownItem = null;
             }
             this._packIndex = value;
             if (value != 0) {
                 PackView.instance.packList[this._packIndex - 1].setSelect(true);
+                this.ownItem = PackView.instance.packList[this._packIndex - 1].ownItem;
             }
+        }
+    );
+    d(p, "ownItem"
+        ,function () {
+            return this._ownItem;
+        }
+        ,function (value) {
+            this._ownItem = value;
         }
     );
     return GameModel;
 }());
 egret.registerClass(GameModel,'GameModel');
+//# sourceMappingURL=GameModel.js.map

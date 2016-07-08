@@ -13,8 +13,7 @@ class PackItemRenderer extends egret.Sprite{
     private bgLight:egret.Sprite;
     
     private packVo:PackVo;
-    private _itemId:number=0;
-    public itemVo:ItemVo;
+    private _ownItem:OwnVo;
     private isSelect:boolean=false;
     private itemTxt:egret.TextField;
     private numTxt:egret.TextField;
@@ -50,39 +49,21 @@ class PackItemRenderer extends egret.Sprite{
         this.addChild(this.numTxt);
     }
     
-    public get itemId():number{
-        return this._itemId;
-    }
-    
-    public set itemId(itemId:number){
-        this._itemId = itemId;
-        if(itemId==0){
-            this.itemVo=null;
-        }
-        else{
-            var isFind: boolean = false;
-            for(var i: number = 0;i < UserModel.instance.ownerList.length;i++) {
-                if(UserModel.instance.ownerList[i].itemId == this._itemId) {
-                    this.itemVo = UserModel.instance.ownerList[i];
-                    isFind = true;
-                    break;
-                }
-            }
-            if(!isFind) {
-                console.error("没有找到相关背包物品");
-                this._itemId = 0;
-                this.itemVo = null;
-            }
-        }
+    public set ownItem(value:OwnVo){
+        this._ownItem = value;
         
-        if(this.itemVo!=null){
-            this.itemTxt.text=this.itemVo.descriName;
-            this.numTxt.text=this.itemVo.ownNum.toString();
+        if(this._ownItem!=null){
+            this.itemTxt.text = GameUtil.getItemById(this._ownItem.itemId).desc;
+            this.numTxt.text=this._ownItem.counts.toString();
         }
         else{
             this.itemTxt.text="";
             this.numTxt.text="";
         }
+    }
+    
+    public get ownItem():OwnVo{
+        return this._ownItem;
     }
     
     protected drawBg(color:number):void{
@@ -105,10 +86,20 @@ class PackItemRenderer extends egret.Sprite{
     private clickToSelect(e:Event):void{
         this.isSelect=!this.isSelect;
         if(this.isSelect) {
-            //如果原格子有物品且新格子无物品，则原格子物品移动到新格子
-            if(this.itemId==0 && GameModel.instance.packIndex>0 && PackView.instance.packList[GameModel.instance.packIndex-1].itemId!=0){
-                this.itemId=PackView.instance.packList[GameModel.instance.packIndex - 1].itemId;
-                PackView.instance.packList[GameModel.instance.packIndex - 1].itemId=0;
+//            //如果原格子有物品且新格子无物品，则原格子物品移动到新格子
+//            if(GameModel.instance.packIndex > 0 &&this.ownItem==null &&GameModel.instance.ownItem!=null){
+//                this.ownItem = GameModel.instance.ownItem;
+//                PackView.instance.packList[GameModel.instance.packIndex - 1].ownItem=null;
+//            }
+            //如果原格子有物品且新格子有物品且物品相同则合并到新格子
+            if(GameModel.instance.packIndex>0 && this.ownItem!=null && GameModel.instance.ownItem!=null && this.ownItem.itemId==GameModel.instance.ownItem.itemId)
+            {
+                var ownItem=this.ownItem;
+                ownItem.counts += GameModel.instance.ownItem.counts;
+                this.ownItem=ownItem;
+                GameModel.instance.ownItem.counts=0;
+                PackView.instance.packList[GameModel.instance.packIndex-1].ownItem=null;
+                UserModel.instance.clearOwnerList();
             }
             GameModel.instance.packIndex = this.packVo.index;
         }

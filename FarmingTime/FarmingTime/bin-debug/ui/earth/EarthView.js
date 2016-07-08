@@ -23,3 +23,4 @@ var EarthView = (function (_super) {
     return EarthView;
 }(egret.Sprite));
 egret.registerClass(EarthView,'EarthView',["Ipanel"]);
+//# sourceMappingURL=EarthView.js.map

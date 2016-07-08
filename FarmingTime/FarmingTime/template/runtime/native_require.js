@@ -36,6 +36,7 @@ var game_file_list = [
 	"bin-debug/utils/ButtonUtils.js",
 	"bin-debug/utils/CustomTimer.js",
 	"bin-debug/utils/Dictionary.js",
+	"bin-debug/utils/GameUtil.js",
 	"bin-debug/utils/NumberBar.js",
 	"bin-debug/utils/PcHelper.js",
 	"bin-debug/utils/SoundManager.js",

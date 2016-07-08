@@ -3,6 +3,6 @@
  * @author 
  *
  */
-interface Dictionary {
+interface Dictionary{
 	[index:string]:any;
 }

@@ -6,8 +6,9 @@ class FarmlandItemRenderer extends EarthItemRenderer{
     /**
      * 当前种植物的种子数据(当无种植时为null)
      */
-    private seedVo:SeedVo;
+    private item:ItemVo;
     private plantTxt:egret.TextField;
+    private currentPlantState:number;
     
     public constructor(vo:EarthVo) {
         super(vo,0x663300);
@@ -20,8 +21,8 @@ class FarmlandItemRenderer extends EarthItemRenderer{
      * 购买开启土地
      */
     public open(e:Event): void {
-        if(UserModel.instance.gold>=this.earthVo.basePrice){
-            UserModel.instance.gold-=this.earthVo.basePrice;
+        if(UserModel.instance.gold>=this.earthVo.openPrice){
+            UserModel.instance.gold -= this.earthVo.openPrice;
             console.log("消息提示：" + "开启新土地");
             this.setLandState(1);
             this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.open,this);
@@ -36,7 +37,11 @@ class FarmlandItemRenderer extends EarthItemRenderer{
      * @param seedType
      */
     public plant(e:Event): void {
-        var item: ItemVo = PackView.instance.getItem(GameModel.instance.packIndex);
+        //当前所选物品必须为种子方能种植
+        var item: ItemVo;
+        if(GameModel.instance.ownItem!=null){
+            item = GameUtil.getItemById(GameModel.instance.ownItem.itemId);
+        }
         if(item==null||item.type!=3){
             return;
         }
@@ -47,27 +52,22 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                 break;
             //1-空闲
             case 1:
-                var seedType: number = item.subType;
-                for(var i: number = 0;i < ConfigModel.instance.seedList.length;i++) {
-                    if(seedType == ConfigModel.instance.seedList[i].seedType) {
-                        this.seedVo = ConfigModel.instance.seedList[i];
-                        if(!PackView.instance.consume(GameModel.instance.packIndex)){
-                            console.log("弹出提示面板：" + "道具使用失败");
-                            this.seedVo=null;
-                        }
-                        else{
-                            this.earthVo.currentType=seedType;
-                            console.log("消息提示：" + "种植"+seedType.toString()+"成功");
-                        }
-                        break;
-                    }
+                var i:number;
+                if(PackView.instance.consume(GameModel.instance.packIndex)){
+                    this.earthVo.targetId=item.id;
+                    this.item = item;
+                    console.log("消息提示：" + "种植" + GameUtil.getItemById(item.targetId).desc + "成功");
                 }
-                if(this.seedVo!=null){
+                else{
+                    console.log("弹出提示面板：" + "道具使用失败");
+                    this.item=null;
+                }
+                if(this.item!=null){
                     this.setLandState(2);
                     this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.plant,this);
                 }
                 else{
-                    console.log("弹出提示面板：" + "没有找到该种子"+seedType.toString());
+                    console.log("弹出提示面板：" + "没有找到该种子"+item.desc.toString());
                 }
                 break;
             //2-种植中
@@ -99,6 +99,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
             //3-种植完成
             case 3:
                 EarthManager.instance.removeTimer(this);
+                this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.clickPlant,this);
                 this.setLandState(1);
                 break;
         }
@@ -124,8 +125,23 @@ class FarmlandItemRenderer extends EarthItemRenderer{
             //3-种植完成
             case 3:
                 console.log("消息提示：" + "收获XXX");
-                console.log("仓库中增加相应物品");
-                this.setLandState(1);
+                var counts:number=this.item.gainMinTimes+Math.floor(Math.random()*(this.item.gainMaxTimes-this.item.gainMinTimes));
+                if(!PackView.instance.gains(GameModel.instance.packIndex,this.item.targetId,counts)){
+                    console.log("弹出提示面板：" + "系统混乱，收获失败");
+                    this.setLandState(1);
+                    return;
+                }
+                this.earthVo.harvestTimes++;
+                //如果当前种植的植物收获次数大于或等于最大收获次数，则不能再次土地置空
+                if(this.earthVo.harvestTimes>=this.item.harvestTimes){
+                    this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.clickPlant,this);
+                    this.setLandState(1);
+                }
+                //如果当前种植的植物收获的次数在收获期内，则进入倒数第二生长阶段继续生长
+                else{
+                    this.earthVo.graduateTime=this.item.graduateTimePoint[this.item.graduateTimePoint.length-2];
+                    this.setLandState(2);
+                }
                 break;
         }
     }
@@ -134,10 +150,22 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         switch(this.earthVo.state){
             //正在种植中，只能砍伐
             case 2:
-                
+                if(GameModel.instance.ownItem!=null&&GameUtil.getItemById(GameModel.instance.ownItem.itemId).type==1){
+                    this.cut();
+                }
                 break;
-            //已经成熟，只能收获
+            //已经成熟，砍伐或者收获
             case 3:
+                if(GameModel.instance.ownItem != null && GameUtil.getItemById(GameModel.instance.ownItem.itemId).type == 1){
+                    this.cut();
+                }
+                else if(GameModel.instance.packIndex!=0 && (GameModel.instance.ownItem==null||GameModel.instance.ownItem.itemId==this.item.targetId))
+                {
+                    this.harvest();
+                }
+                else{
+                    console.log("弹出提示面板：" + "请选择背包空余位置进行收获");
+                }
                 break;
         }
     }
@@ -147,39 +175,42 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         switch(state) {
             //0-未购买
             case 0:
-                this.earthVo.currentType=0;
-                this.earthVo.lastTime=0;
+                this.earthVo.targetId=0;
+                this.earthVo.graduateTime=0;
+                this.earthVo.harvestTimes=0;
                 this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.open,this);
                 break;
             //1-空闲
             case 1:
-                this.earthVo.currentType = 0;
-                this.earthVo.lastTime = 0;
+                this.earthVo.targetId = 0;
+                this.earthVo.graduateTime = 0;
+                this.earthVo.harvestTimes=0;
                 this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.plant,this);
                 break;
             //2-种植中
             case 2:
-                if(this.seedVo==null){
+                if(this.item==null){
                     console.error("当前种植种子为空");
                     this.setLandState(1);
                     return;
                 }
                 this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickPlant,this);
-                this.earthVo.currentType = this.seedVo.seedType;
-                this.earthVo.lastTime = this.seedVo.graduateTime;
-                this.earthVo.graduateState=1;
+                this.earthVo.targetId = this.item.id;
+                this.earthVo.graduateTime = this.earthVo.graduateTime;
+                this.earthVo.harvestTimes=this.earthVo.harvestTimes;
                 EarthManager.instance.addTimer(this);
                 break;
             //3-种植完成
             case 3:
-                if(this.seedVo == null) {
+                if(this.item == null) {
                     console.error("当前种植种子为空");
                     this.setLandState(1);
                     return;
                 }
-                this.earthVo.currentType=this.seedVo.seedType;
-                this.earthVo.graduateState = 0;
-                this.earthVo.lastTime = 0;
+                this.earthVo.targetId=this.item.id;
+                this.earthVo.graduateTime = 0;
+                this.earthVo.harvestTimes=this.earthVo.harvestTimes;
+                this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.clickPlant,this);
                 break;
         }
         this.drawPlant();
@@ -189,22 +220,21 @@ class FarmlandItemRenderer extends EarthItemRenderer{
      * 每秒钟更新一次
      */
     public onUpdate():boolean{
-        this.earthVo.lastTime-=1000;
-        //种植完成
-        if(this.earthVo.lastTime<=0){
-            this.setLandState(3);
-            return true;
+        this.earthVo.graduateTime+=1000;
+        var state: number = GameUtil.getGraduateState(this.earthVo);
+        //不在种植状态的抛错
+        if(state<0){
+            console.error("土壤不在种植状态");
+            return false;
         }
-        //种植进入不同阶段
-        for(var index:number=0;index<this.seedVo.graduateTimePoint.length;index++){
-            if(this.seedVo.graduateTimePoint[index]<this.earthVo.lastTime)
-            {
-                if(this.earthVo.graduateState!=index+1){
-                    this.earthVo.graduateState=index+1;
-                    this.drawPlant();
-                }
-                break;
-            }
+        //植物成熟
+        else if(state==0){
+            this.setLandState(3);
+            return false;
+        }
+        //种植过程中生长状态改变
+        else if(state!=this.currentPlantState){
+            this.drawPlant();
         }
         return true;
     }
@@ -221,7 +251,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
         switch(this.earthVo.state) {
             //0-未购买
             case 0:
-                this.plantTxt.text=this.earthVo.basePrice.toString()+"金币解锁";
+                this.plantTxt.text=this.earthVo.openPrice.toString()+"金币解锁";
                 break;
             //1-空闲
             case 1:
@@ -229,23 +259,19 @@ class FarmlandItemRenderer extends EarthItemRenderer{
                 break;
             //2-种植中
             case 2:
-                this.plantTxt.text = "植物"+this.seedVo.descriName.toString()+"生长阶段"+this.earthVo.graduateState.toString();
+                this.currentPlantState = GameUtil.getGraduateState(this.earthVo);
+                this.plantTxt.text = "植物" + this.item.desc.toString() + "生长阶段" + this.currentPlantState.toString();
                 break;
             //3-种植完成
             case 3:
-                this.plantTxt.text = "植物" + this.earthVo.currentType.toString()+"成熟";
+                this.plantTxt.text = "植物" + GameUtil.getItemById(this.item.targetId).desc+"成熟";
                 break;
         }
     }
     
     public onAdd(data?: any): void {
-        if(this.earthVo.currentType != 0) {
-            for(var i: number = 0;i < ConfigModel.instance.seedList.length;i++){
-                if(this.earthVo.currentType == ConfigModel.instance.seedList[i].seedType){
-                    this.seedVo = ConfigModel.instance.seedList[i];
-                    break;
-                }
-            }
+        if(this.earthVo.targetId != 0) {
+            this.item=GameUtil.getItemById(this.earthVo.targetId);
         }
         this.setLandState(this.earthVo.state);
     }

@@ -44,6 +44,40 @@ var UserModel = (function () {
             }
         }
     };
+    /**
+     * 增加新的拥有道具
+     * @param itemId
+     * @param counts
+     */
+    p.addOwnvo = function (itemId, counts) {
+        var ownvo = new OwnVo();
+        ownvo.itemId = itemId;
+        ownvo.counts = counts;
+        //获取新物品的索引
+        this._ownerList.sort(this.sortOwnerlistByIndex);
+        var i;
+        for (i = 0; i < this._ownerList.length; i++) {
+            if (this._ownerList[i].index == i + 1) {
+                continue;
+            }
+            else {
+                ownvo.index = i + 1;
+            }
+        }
+        if (ownvo.index == null) {
+            ownvo.index = this._ownerList.length;
+        }
+        this._ownerList.push(ownvo);
+        return ownvo;
+    };
+    p.sortOwnerlistByIndex = function (a, b) {
+        if (a.index > b.index) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    };
     d(p, "packList"
         ,function () {
             return this._packList;
@@ -52,3 +86,4 @@ var UserModel = (function () {
     return UserModel;
 }());
 egret.registerClass(UserModel,'UserModel');
+//# sourceMappingURL=UserModel.js.map

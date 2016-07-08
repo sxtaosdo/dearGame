@@ -19,3 +19,4 @@ var ButtonUtils = (function () {
     return ButtonUtils;
 }());
 egret.registerClass(ButtonUtils,'ButtonUtils');
+//# sourceMappingURL=ButtonUtils.js.map

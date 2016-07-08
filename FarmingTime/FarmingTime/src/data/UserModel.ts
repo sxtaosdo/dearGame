@@ -46,6 +46,43 @@ class UserModel {
         }
     }
     
+    /**
+     * 增加新的拥有道具
+     * @param itemId
+     * @param counts
+     */
+    public addOwnvo(itemId:number,counts:number): OwnVo {
+        var ownvo:OwnVo=new OwnVo();
+        ownvo.itemId=itemId;
+        ownvo.counts=counts;
+        
+        //获取新物品的索引
+        this._ownerList.sort(this.sortOwnerlistByIndex);
+        var i:number;
+        for(i= 0;i < this._ownerList.length;i++) {
+            if(this._ownerList[i].index==i+1){
+                continue;
+            }
+            else{
+                ownvo.index=i+1;
+            }
+        }
+        if(ownvo.index==null){
+            ownvo.index=this._ownerList.length;
+        }
+        this._ownerList.push(ownvo);
+        return ownvo;
+    }
+    
+    private sortOwnerlistByIndex(a:OwnVo,b:OwnVo):number{
+        if(a.index>b.index){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    
     public get packList(): Array<PackVo> {
         return this._packList;
     }

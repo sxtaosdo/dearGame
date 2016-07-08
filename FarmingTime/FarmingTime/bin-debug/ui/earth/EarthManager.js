@@ -34,12 +34,12 @@ var EarthManager = (function () {
     p.removeTimer = function (data) {
         for (var i = 0; i < this.earthList.length; i++) {
             if (this.earthList[i] == data) {
-                this.earthList.splice(i);
-                i--;
-                break;
+                this.earthList.splice(i, 1);
             }
         }
+        console.log(this.earthList.length.toString());
     };
     return EarthManager;
 }());
 egret.registerClass(EarthManager,'EarthManager');
+//# sourceMappingURL=EarthManager.js.map

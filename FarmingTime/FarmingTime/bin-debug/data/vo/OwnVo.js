@@ -15,3 +15,4 @@ var OwnVo = (function () {
     return OwnVo;
 }());
 egret.registerClass(OwnVo,'OwnVo');
+//# sourceMappingURL=OwnVo.js.map
