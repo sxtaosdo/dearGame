@@ -9,7 +9,7 @@
 			"name":"config"
 		},
 		{
-			"keys":"lockEarth_png,barBg_png,iconBg_png,arrowBg_png",
+			"keys":"lockEarth_png,barBg_png,iconBg_png,arrowBg_png,baseEarthBg_png,farmEarthBg_png",
 			"name":"earth"
 		}
 	],
@@ -38,6 +38,16 @@
 			"name":"arrowBg_png",
 			"type":"image",
 			"url":"assets/earth/arrowBg.png"
+		},
+		{
+			"name":"baseEarthBg_png",
+			"type":"image",
+			"url":"assets/earth/baseEarthBg.png"
+		},
+		{
+			"name":"farmEarthBg_png",
+			"type":"image",
+			"url":"assets/earth/farmEarthBg.png"
 		}
 	]
 }

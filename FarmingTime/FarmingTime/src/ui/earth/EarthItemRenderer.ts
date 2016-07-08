@@ -10,24 +10,24 @@ class EarthItemRenderer extends egret.Sprite{
     protected gapX:number=10;
     protected gapY:number=10;
     
-    protected gridColor:number=0xffffff;
+    protected gridPic: string ="baseEarthBg";
     protected earthVo:EarthVo;
     
-    public constructor(vo:EarthVo,color?:number) {
+    public constructor(vo:EarthVo,pic?:string) {
         super();
         this.earthVo=vo;
         this.x=this.startX+vo.position.x*(this.gridWidth+this.gapX);
         this.y=this.startY+vo.position.y*(this.gridHeight+this.gapY);
-        if(color==null){
-            color=this.gridColor;
+        if(pic==null || pic==""){
+            pic=this.gridPic;
         }
-        this.drawBg(color);
+        this.drawBg(pic);
     }
     
-    protected drawBg(color:number):void{
-        this.graphics.beginFill(color);
-        this.graphics.drawRect(0,0,this.gridWidth,this.gridHeight);
-        this.graphics.endFill();
+    protected drawBg(picUrl:string):void{
+        var bp:egret.Bitmap=new egret.Bitmap();
+        bp.texture=RES.getRes(picUrl+"_png");
+        this.addChild(bp);
     }
     
     public init(data?: any):void{

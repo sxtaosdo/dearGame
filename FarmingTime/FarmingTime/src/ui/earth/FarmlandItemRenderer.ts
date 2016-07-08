@@ -11,7 +11,7 @@ class FarmlandItemRenderer extends EarthItemRenderer{
     private currentPlantState:number;
     
     public constructor(vo:EarthVo) {
-        super(vo,0x663300);
+        super(vo,"farmEarthBg");
         this.touchChildren=true;
         this.touchEnabled=true;
         this.onAdd();

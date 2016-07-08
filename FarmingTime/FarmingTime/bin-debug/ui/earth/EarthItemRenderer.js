@@ -4,7 +4,7 @@
  */
 var EarthItemRenderer = (function (_super) {
     __extends(EarthItemRenderer, _super);
-    function EarthItemRenderer(vo, color) {
+    function EarthItemRenderer(vo, pic) {
         _super.call(this);
         this.startX = 5;
         this.startY = 200;
@@ -12,20 +12,20 @@ var EarthItemRenderer = (function (_super) {
         this.gridHeight = 100;
         this.gapX = 10;
         this.gapY = 10;
-        this.gridColor = 0xffffff;
+        this.gridPic = "baseEarthBg";
         this.earthVo = vo;
         this.x = this.startX + vo.position.x * (this.gridWidth + this.gapX);
         this.y = this.startY + vo.position.y * (this.gridHeight + this.gapY);
-        if (color == null) {
-            color = this.gridColor;
+        if (pic == null || pic == "") {
+            pic = this.gridPic;
         }
-        this.drawBg(color);
+        this.drawBg(pic);
     }
     var d = __define,c=EarthItemRenderer,p=c.prototype;
-    p.drawBg = function (color) {
-        this.graphics.beginFill(color);
-        this.graphics.drawRect(0, 0, this.gridWidth, this.gridHeight);
-        this.graphics.endFill();
+    p.drawBg = function (picUrl) {
+        var bp = new egret.Bitmap();
+        bp.texture = RES.getRes(picUrl + "_png");
+        this.addChild(bp);
     };
     p.init = function (data) {
     };

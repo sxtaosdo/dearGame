@@ -28,6 +28,7 @@ class PackView extends egret.Sprite implements Ipanel {
             if(ownvo.counts<=0){
                 ownvo=null;
                 UserModel.instance.clearOwnerList();
+                GameModel.instance.ownItem=null;
             }
             this.packList[index - 1].ownItem=ownvo;
             return true;

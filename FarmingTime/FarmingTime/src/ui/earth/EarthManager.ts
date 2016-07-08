@@ -40,6 +40,5 @@ class EarthManager{
                 this.earthList.splice(i,1);
             }
         }
-        console.log(this.earthList.length.toString());
     }
 }

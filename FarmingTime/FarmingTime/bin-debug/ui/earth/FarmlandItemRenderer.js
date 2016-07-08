@@ -5,7 +5,7 @@
 var FarmlandItemRenderer = (function (_super) {
     __extends(FarmlandItemRenderer, _super);
     function FarmlandItemRenderer(vo) {
-        _super.call(this, vo, 0x663300);
+        _super.call(this, vo, "farmEarthBg");
         this.touchChildren = true;
         this.touchEnabled = true;
         this.onAdd();

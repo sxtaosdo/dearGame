@@ -44,8 +44,8 @@ var UserModel = (function () {
         //升级控制
         if (this._farmCurrentExp >= this._farmRequiredExp) {
             for (var i = this._farmlevel - 1; i < ConfigModel.instance.farmLevelList.length; i++) {
-                if (this._farmlevel > ConfigModel.instance.farmLevelList[i]) {
-                    this._farmlevel -= ConfigModel.instance.farmLevelList[i];
+                if (this._farmCurrentExp >= ConfigModel.instance.farmLevelList[i]) {
+                    this._farmCurrentExp -= ConfigModel.instance.farmLevelList[i];
                     continue;
                 }
                 else {

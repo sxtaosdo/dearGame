@@ -27,6 +27,7 @@ var PackView = (function (_super) {
             if (ownvo.counts <= 0) {
                 ownvo = null;
                 UserModel.instance.clearOwnerList();
+                GameModel.instance.ownItem = null;
             }
             this.packList[index - 1].ownItem = ownvo;
             return true;

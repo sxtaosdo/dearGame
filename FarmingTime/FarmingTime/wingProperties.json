@@ -154,6 +154,16 @@
 					"isFolder":false,
 					"key":"arrowBg_png",
 					"name":"arrowBg_png"
+				},
+				{
+					"isFolder":false,
+					"key":"baseEarthBg_png",
+					"name":"baseEarthBg_png"
+				},
+				{
+					"isFolder":false,
+					"key":"farmEarthBg_png",
+					"name":"farmEarthBg_png"
 				}
 			]
 		},
